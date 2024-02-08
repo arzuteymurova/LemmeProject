@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\User\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LemmeProject.Application\LemmeProject.Application.csproj" />
+    <ProjectReference Include="..\LemmeProject.Infrastructure\LemmeProject.Infrastructure.csproj" />
+    <ProjectReference Include="..\LemmeProject.Persistence\LemmeProject.Persistence.csproj" />
+  </ItemGroup>
+
+</Project>

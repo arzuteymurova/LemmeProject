@@ -1,0 +1,6 @@
+@LemmeProject.API_HostAddress = http://localhost:5113
+
+GET {{LemmeProject.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
