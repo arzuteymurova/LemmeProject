@@ -1,3 +1,4 @@
+using LemmeProject.API.Middlewares;
 using LemmeProject.Application;
 using LemmeProject.Application.Helpers;
 using LemmeProject.Domain.Entities.Identity;
@@ -55,6 +56,8 @@ namespace LemmeProject.API
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.MapControllers();
 

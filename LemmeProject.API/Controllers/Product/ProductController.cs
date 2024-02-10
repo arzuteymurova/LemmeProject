@@ -10,7 +10,6 @@ namespace LemmeProject.API.Controllers.Product
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
-
         public ProductController(IProductService productService)
         {
             _productService = productService;
@@ -52,5 +51,24 @@ namespace LemmeProject.API.Controllers.Product
             await _productService.DeleteByIdAsync(id);
             return Ok();
         }
+
+        [HttpGet("SearchProduct")]
+        public async Task<IActionResult> SearchProduct(string productName)
+        {
+
+            var products = await _productService.GetProductByName(productName);
+            foreach (var product in products)
+            {    
+                _productService.LogSearch(product);
+            }
+            return Ok(products);
+        }
+
+        [HttpGet]
+        public IActionResult GetSearchCount()
+        {
+           return Ok(_productService.GetSearchCount());
+        }
+
     }
 }

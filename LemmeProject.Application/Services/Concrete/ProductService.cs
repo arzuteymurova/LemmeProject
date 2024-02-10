@@ -2,6 +2,7 @@
 using LemmeProject.Application.DTOs.Products;
 using LemmeProject.Application.Services.Abstract;
 using LemmeProject.Domain.Entities;
+using LemmeProject.Domain.Enums;
 using LemmeProject.Domain.Interfaces;
 
 namespace LemmeProject.Application.Services.Concrete
@@ -48,5 +49,33 @@ namespace LemmeProject.Application.Services.Concrete
 
             return productTable;
         }
+
+        public async Task<List<ProductTableResponse>> GetProductByName(string name)
+        {
+            List<Product> products = await _productRepository.FindByConditionAsync(p => p.EntityStatus == EntityStatus.Active && p.Name.ToLower().Contains(name.ToLower()));
+
+            List<ProductTableResponse> productTable = _mapper.Map<List<ProductTableResponse>>(products);
+
+            return productTable;
+        }
+
+        private static readonly Dictionary<string, int> searchCounts = new();
+        public void LogSearch(ProductTableResponse productTableResponse)
+        {
+            if (searchCounts.ContainsKey(productTableResponse.Name))
+            {
+                searchCounts[productTableResponse.Name]++;
+            }
+            else
+            {
+                searchCounts[productTableResponse.Name] = 1;
+            }
+
+        }
+        public Dictionary<string,int> GetSearchCount()
+        {
+            return searchCounts;
+        }
+
     }
 }

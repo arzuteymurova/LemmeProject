@@ -16,10 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\User\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\LemmeProject.Application\LemmeProject.Application.csproj" />
     <ProjectReference Include="..\LemmeProject.Infrastructure\LemmeProject.Infrastructure.csproj" />
     <ProjectReference Include="..\LemmeProject.Persistence\LemmeProject.Persistence.csproj" />
