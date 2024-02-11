@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LemmeProject.Persistence.Migrations
 {
     [DbContext(typeof(LemmeAppContext))]
-    [Migration("20240207130232_Init")]
-    partial class Init
+    [Migration("20240211083050_Mig1")]
+    partial class Mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
