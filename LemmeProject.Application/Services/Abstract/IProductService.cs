@@ -1,11 +1,11 @@
 ﻿using LemmeProject.Application.DTOs.Products;
-using LemmeProject.Domain.Entities;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LemmeProject.Application.Services.Abstract
 {
     public interface IProductService
     {
-        Task AddAsync(ProductAddRequest productAddRequest);
+        Task AddAsync([FromForm] ProductAddRequest productAddRequest);
         Task EditAsync(ProductUpdateRequest productUpdateRequest);
         Task<ProductTableResponse> GetById(int id);
         Task<List<ProductTableResponse>> GetTable();

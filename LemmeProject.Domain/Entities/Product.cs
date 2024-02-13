@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LemmeProject.Domain.Entities
+﻿namespace LemmeProject.Domain.Entities
 {
     public class Product : BaseEntity
     {
@@ -14,6 +8,7 @@ namespace LemmeProject.Domain.Entities
         public string Ingredients { get; set; }
 
         //Relations
-       // public List<Image> Images { get; set; }
+        public List<ProductImage> Images { get; set; }
+        public List<ProductSearchHistory> ProductSearchHistory { get; set; }
     }
 }

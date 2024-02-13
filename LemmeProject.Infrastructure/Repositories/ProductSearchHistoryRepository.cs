@@ -4,9 +4,9 @@ using LemmeProject.Persistence.AppDbContext;
 
 namespace LemmeProject.Infrastructure.Repositories
 {
-    public class ProductImageRepository : RepositoryBase<ProductImage>, IProductImageRepository
+    public class ProductSearchHistoryRepository : RepositoryBase<ProductSearchHistory>, IProductSearchHistoryRepository
     {
-        public ProductImageRepository(LemmeAppContext context) : base(context)
+        public ProductSearchHistoryRepository(LemmeAppContext context) : base(context)
         {
         }
     }

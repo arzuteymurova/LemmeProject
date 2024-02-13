@@ -2,7 +2,7 @@
 
 namespace LemmeProject.Domain.Interfaces
 {
-    public interface IProductImageRepository : IRepositoryBase<ProductImage>
+    public interface IProductSearchHistoryRepository : IRepositoryBase<ProductSearchHistory>
     {
     }
 }

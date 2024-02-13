@@ -1,6 +1,7 @@
 using LemmeProject.API.Middlewares;
 using LemmeProject.Application;
 using LemmeProject.Application.Helpers;
+using LemmeProject.Application.Identity.Concrete;
 using LemmeProject.Domain.Entities.Identity;
 using LemmeProject.Infrastructure;
 using LemmeProject.Persistence;
@@ -22,15 +23,20 @@ namespace LemmeProject.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.Configure<JWTOptions>(builder.Configuration.GetSection("JWTOptions"));
+            JWTOptions jwtSettings = builder.Configuration.GetSection("JWTOptions").Get<JWTOptions>();
 
-            
+            builder.Services.Configure<FileServerPath>(builder.Configuration.GetSection("FileServerPath"));
+            FileServerPath filePath = builder.Configuration.GetSection("FileServerPath").Get<FileServerPath>();
 
             builder.Services.AddPersistence(builder.Configuration);
             builder.Services.AddApplication(builder.Configuration);
             builder.Services.AddInfrastructure(builder.Configuration);
 
-            builder.Services.Configure<FileServerPath>(builder.Configuration.GetSection("FileServerPath"));
-            FileServerPath filePath = builder.Configuration.GetSection("FileServerPath").Get<FileServerPath>();
+            builder.Services.AddSwaggerSetting();
+            builder.Services.AuthenticationJwtSettings(jwtSettings);
+
+            
 
             builder.Services.AddIdentity<AppUser, AppRole>(options =>
             {
@@ -57,7 +63,7 @@ namespace LemmeProject.API
 
             app.UseAuthorization();
 
-            app.UseMiddleware<ErrorHandlerMiddleware>();
+         //   app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.MapControllers();
 

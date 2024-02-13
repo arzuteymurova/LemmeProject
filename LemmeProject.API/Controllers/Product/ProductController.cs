@@ -26,7 +26,7 @@ namespace LemmeProject.API.Controllers.Product
         [HttpGet("GetAllProducts")]
         public async Task<IActionResult> GetProducts()
         {
-            var products =await _productService.GetTable();
+            var products = await _productService.GetTable();
             return Ok(products);
         }
 
@@ -52,23 +52,19 @@ namespace LemmeProject.API.Controllers.Product
             return Ok();
         }
 
-        [HttpGet("SearchProduct")]
-        public async Task<IActionResult> SearchProduct(string productName)
+        [HttpGet("SearchProductByName")]
+        public async Task<IActionResult> SearchProductByName(string productName)
         {
 
             var products = await _productService.GetProductByName(productName);
             foreach (var product in products)
-            {    
+            {
                 _productService.LogSearch(product);
             }
             return Ok(products);
         }
 
-        [HttpGet]
-        public IActionResult GetSearchCount()
-        {
-           return Ok(_productService.GetSearchCount());
-        }
+        
 
     }
 }

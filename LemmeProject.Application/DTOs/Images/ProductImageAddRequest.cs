@@ -1,16 +1,18 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using LemmeProject.Application.Helpers;
 using System.Text.Json.Serialization;
 
 namespace LemmeProject.Application.DTOs.Images
 {
-    public class ImageAddRequest
+    public class ProductImageAddRequest
     {
+
         public string FileName { get; set; }
         [JsonIgnore]
-        public string FilePath { get; set; }
-        public IFormFile File { get; set; }
+        public string FilePath { get; set; } = FileServerPath.Path;
+        public string FileBase64 { get; set; }
 
         //Relations
+        [JsonIgnore]
         public int ProductId { get; set; }
     }
 }

@@ -2,6 +2,6 @@
 {
     public class FileServerPath
     {
-        public string Path { get; set; }
+        public static string Path { get; set; }
     }
 }

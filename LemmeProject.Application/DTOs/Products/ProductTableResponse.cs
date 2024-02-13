@@ -11,6 +11,6 @@ namespace LemmeProject.Application.DTOs.Products
         public string Ingredients { get; set; }
 
         //Relations
-        //public IList<ImageAddRequest> Images { get; set; }
+        public List<ProductImageTableResponse> Images { get; set; }
     }
 }
