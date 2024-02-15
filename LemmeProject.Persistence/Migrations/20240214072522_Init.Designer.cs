@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LemmeProject.Persistence.Migrations
 {
     [DbContext(typeof(LemmeAppContext))]
-    [Migration("20240213063841_Init")]
+    [Migration("20240214072522_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -164,8 +164,7 @@ namespace LemmeProject.Persistence.Migrations
 
                     b.Property<string>("Ingredients")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -211,6 +210,33 @@ namespace LemmeProject.Persistence.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductImages", (string)null);
+                });
+
+            modelBuilder.Entity("LemmeProject.Domain.Entities.ProductSearchHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SearchedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductSearchHistory");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -327,6 +353,17 @@ namespace LemmeProject.Persistence.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("LemmeProject.Domain.Entities.ProductSearchHistory", b =>
+                {
+                    b.HasOne("LemmeProject.Domain.Entities.Product", "Product")
+                        .WithMany("ProductSearchHistory")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("LemmeProject.Domain.Entities.Identity.AppRole", null)
@@ -381,6 +418,8 @@ namespace LemmeProject.Persistence.Migrations
             modelBuilder.Entity("LemmeProject.Domain.Entities.Product", b =>
                 {
                     b.Navigation("Images");
+
+                    b.Navigation("ProductSearchHistory");
                 });
 #pragma warning restore 612, 618
         }

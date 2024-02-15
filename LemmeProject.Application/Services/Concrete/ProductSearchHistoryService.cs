@@ -40,7 +40,6 @@ namespace LemmeProject.Application.Services.Concrete
                          join product in products on history.ProductId equals product.Id
                          select new ProductSearchHistoryTableResponse()
                          {
-                             Id = history.Id,
                              ProductName = product.Name,
                              SearchedDate = history.SearchedDate,
                          };
@@ -72,7 +71,7 @@ namespace LemmeProject.Application.Services.Concrete
                                      orderby g.Count() descending
                                      select new MostProductSearchHoursTableResponse()
                                      {
-                                         Hour = $"{g.Key}:00",
+                                         Hour = $"{g.Key+4}:00",
                                          SearchCount = g.Count()
                                      };
             return searchCountsByHour.ToList();
@@ -111,7 +110,8 @@ namespace LemmeProject.Application.Services.Concrete
             var searchHistory = await _productSearchHistoryRepository.FindAllAsync();
 
             var searchCountsDuringDay = from history in searchHistory
-                                     group history by DateTime.Today.ToShortDateString() into g
+                                     group history by history.SearchedDate.ToShortDateString() into g
+                                     where g.Key == DateTime.Today.ToShortDateString()
                                      orderby g.Count() descending
                                      select new SearchedProductCountDuringDayTableResponse()
                                      {

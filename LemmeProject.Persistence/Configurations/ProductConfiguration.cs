@@ -14,7 +14,7 @@ namespace LemmeProject.Persistence.Configurations
             builder.Property(b => b.Name).IsRequired();
             builder.Property(b => b.Overview).IsRequired();
             builder.Property(b => b.HowToUse).IsRequired();
-            builder.Property(b => b.Ingredients).HasMaxLength(50);
+            builder.Property(b => b.Ingredients).IsRequired();
             builder.Property(b => b.EntityStatus).HasColumnName("IsDeleted");
 
             //Relations

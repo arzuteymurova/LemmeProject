@@ -142,7 +142,7 @@ namespace LemmeProject.Application.Services.Concrete
                                                }).ToList()
                                            }).ToList();
 
-            return result;           
+            return result;
 
         }
 

@@ -67,7 +67,7 @@ namespace LemmeProject.Persistence.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Overview = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HowToUse = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Ingredients = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Ingredients = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<int>(type: "int", nullable: false)
                 },
@@ -205,6 +205,28 @@ namespace LemmeProject.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ProductSearchHistory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SearchedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EntityStatus = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductSearchHistory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductSearchHistory_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -248,6 +270,11 @@ namespace LemmeProject.Persistence.Migrations
                 name: "IX_ProductImages_ProductId",
                 table: "ProductImages",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductSearchHistory_ProductId",
+                table: "ProductSearchHistory",
+                column: "ProductId");
         }
 
         /// <inheritdoc />
@@ -270,6 +297,9 @@ namespace LemmeProject.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductImages");
+
+            migrationBuilder.DropTable(
+                name: "ProductSearchHistory");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -37,7 +37,8 @@ namespace LemmeProject.Application.Helpers
             {
                 if (!string.IsNullOrEmpty(fileNameFromDb))
                 {
-                    string folderPath = FileServerPath.Path; //WebConfigurationManager.AppSettings["PhPersonPhotoPath"];
+                    string currentDirectory = Directory.GetCurrentDirectory();
+                    string folderPath = Path.Combine(currentDirectory, "AppImages");
                     string fullFilePath = Path.Combine(folderPath, fileNameFromDb.ToUpper());
                     photo = File.ReadAllBytes(fullFilePath);
                 }

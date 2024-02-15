@@ -36,18 +36,28 @@ namespace LemmeProject.API
             builder.Services.AddSwaggerSetting();
             builder.Services.AuthenticationJwtSettings(jwtSettings);
 
-            
+
 
             builder.Services.AddIdentity<AppUser, AppRole>(options =>
             {
-                options.Password.RequiredLength = 5; 
-                options.Password.RequireNonAlphanumeric = false; 
-                options.Password.RequireLowercase = false; 
+                options.Password.RequiredLength = 5;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
-                                                          
-                options.Password.RequireDigit = false; 
-                options.Lockout.MaxFailedAccessAttempts = 5; 
+
+                options.Password.RequireDigit = false;
+                options.Lockout.MaxFailedAccessAttempts = 5;
             }).AddEntityFrameworkStores<LemmeAppContext>().AddDefaultTokenProviders();
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
 
 
             var app = builder.Build();
@@ -59,11 +69,13 @@ namespace LemmeProject.API
                 app.UseSwaggerUI();
             }
 
+            app.UseCors("CorsPolicy");
+
             app.UseAuthentication();
 
             app.UseAuthorization();
 
-         //   app.UseMiddleware<ErrorHandlerMiddleware>();
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.MapControllers();
 

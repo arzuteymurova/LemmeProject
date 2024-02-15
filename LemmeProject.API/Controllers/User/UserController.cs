@@ -8,7 +8,8 @@ namespace LemmeProject.API.Controllers.User
 {
     [Route("api/[controller]")]
     [ApiController]
-
+    [Authorize(AuthenticationSchemes ="Bearer")]
+    
     public class UserController : ControllerBase
     {
         private readonly IAccountService _accountService;
@@ -18,7 +19,7 @@ namespace LemmeProject.API.Controllers.User
             _accountService = accountService;
         }
 
-
+        [AllowAnonymous]
         [HttpPost("RegisterUser")]
         public async Task<IActionResult> RegisterUser(UserAddRequest userAddRequest)
         {
@@ -118,9 +119,8 @@ namespace LemmeProject.API.Controllers.User
 
         }
 
-
-        [HttpPost("Login")]
         [AllowAnonymous]
+        [HttpPost("Login")]        
         public async Task<IActionResult> Login(LoginRequest loginRequest)
         {
             LoginedUserResponse loginedUser = await _accountService.Login(loginRequest);

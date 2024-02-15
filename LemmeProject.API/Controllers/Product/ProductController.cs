@@ -1,5 +1,6 @@
 ﻿using LemmeProject.Application.DTOs.Products;
 using LemmeProject.Application.Services.Abstract;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace LemmeProject.API.Controllers.Product
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(AuthenticationSchemes ="Bearer")]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -30,6 +32,7 @@ namespace LemmeProject.API.Controllers.Product
             return Ok(products);
         }
 
+        [AllowAnonymous]
         [HttpGet("GetProductById/{id}")]
         public async Task<IActionResult> GetProductById(int id)
         {
@@ -52,6 +55,7 @@ namespace LemmeProject.API.Controllers.Product
             return Ok();
         }
 
+        [AllowAnonymous]
         [HttpGet("SearchProductByName")]
         public async Task<IActionResult> SearchProductByName(string productName)
         {

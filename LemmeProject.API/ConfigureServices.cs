@@ -19,6 +19,7 @@ namespace LemmeProject.API
                     Description = "Lemme Project-də istifadə olunan API-lər "
 
                 });
+
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Name = "Authorization",

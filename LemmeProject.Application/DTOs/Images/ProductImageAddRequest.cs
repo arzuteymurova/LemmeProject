@@ -7,8 +7,9 @@ namespace LemmeProject.Application.DTOs.Images
     {
 
         public string FileName { get; set; }
+
         [JsonIgnore]
-        public string FilePath { get; set; } = FileServerPath.Path;
+        public string FilePath { get; set; } = Path.Combine(Directory.GetCurrentDirectory(), "AppImages");
         public string FileBase64 { get; set; }
 
         //Relations

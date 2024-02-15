@@ -8,7 +8,6 @@ namespace LemmeProject.Application.DTOs.ProductSearchHistory
 {
     public class ProductSearchHistoryTableResponse
     {
-        public int Id { get; set; }
         public string ProductName { get; set; }
         public DateTime SearchedDate { get; set; }
 

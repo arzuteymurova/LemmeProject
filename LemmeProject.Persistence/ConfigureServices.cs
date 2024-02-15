@@ -9,8 +9,12 @@ namespace LemmeProject.Persistence
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
+
+
             services.AddDbContext<LemmeAppContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+
 
             return services;
         }
