@@ -1,10 +1,10 @@
-﻿using LemmeProject.Application.Identity.Abstract;
+﻿using LemmeProject.Application.Utilities.Identity.Abstract;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace LemmeProject.Application.Identity.Concrete
+namespace LemmeProject.Application.Utilities.Identity.Concrete
 {
     public class JWTTokenService : IJWTTokenService
     {

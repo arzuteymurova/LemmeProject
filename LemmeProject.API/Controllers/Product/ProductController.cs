@@ -8,7 +8,7 @@ namespace LemmeProject.API.Controllers.Product
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes ="Bearer")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class ProductController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -20,55 +20,83 @@ namespace LemmeProject.API.Controllers.Product
         [HttpPost("AddProduct")]
         public async Task<IActionResult> AddProduct(ProductAddRequest productAddRequest)
         {
-            await _productService.AddAsync(productAddRequest);
-            return Ok();
-        }
+            var result = await _productService.AddAsync(productAddRequest);
+            if (result.Success)
+            {
+                return Ok(result.Message);
+            }
 
-
-        [HttpGet("GetAllProducts")]
-        public async Task<IActionResult> GetProducts()
-        {
-            var products = await _productService.GetTable();
-            return Ok(products);
-        }
-
-        [AllowAnonymous]
-        [HttpGet("GetProductById/{id}")]
-        public async Task<IActionResult> GetProductById(int id)
-        {
-            var product = await _productService.GetById(id);
-            return Ok(product);
+            return BadRequest(result.Message);
         }
 
 
         [HttpPost("EditProduct")]
         public async Task<IActionResult> EditProduct(ProductUpdateRequest productUpdateRequest)
         {
-            await _productService.EditAsync(productUpdateRequest);
-            return Ok();
+            var result = await _productService.EditAsync(productUpdateRequest);
+            if (result.Success)
+            {
+                return Ok(result.Message);
+            }
+
+            return BadRequest(result.Message);
         }
+
 
         [HttpPost("DeleteProduct/{id}")]
         public async Task<IActionResult> DeleteProduct(int id)
         {
-            await _productService.DeleteByIdAsync(id);
-            return Ok();
+            var result = await _productService.DeleteByIdAsync(id);
+            if (result.Success)
+            {
+                return Ok(result.Message);
+            }
+
+            return BadRequest(result.Message);
         }
+
+
+        [HttpGet("GetAllProducts")]
+        public async Task<IActionResult> GetProducts()
+        {
+            var result = await _productService.GetTableAsync();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
+
+
+        [AllowAnonymous]
+        [HttpGet("GetProductById/{id}")]
+        public async Task<IActionResult> GetProductById(int id)
+        {
+            var result = await _productService.GetByIdAsync(id);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
+        }
+
 
         [AllowAnonymous]
         [HttpGet("SearchProductByName")]
         public async Task<IActionResult> SearchProductByName(string productName)
         {
-
-            var products = await _productService.GetProductByName(productName);
-            foreach (var product in products)
+            var result = await _productService.GetProductByNameAsync(productName);
+            if (result.Success)
             {
-                _productService.LogSearch(product);
+                return Ok(result.Data);
             }
-            return Ok(products);
+
+            return BadRequest(result.Message);
         }
 
-        
+
 
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace LemmeProject.Application.Identity.Abstract
+﻿namespace LemmeProject.Application.Utilities.Identity.Abstract
 {
     public interface IJWTTokenService
     {

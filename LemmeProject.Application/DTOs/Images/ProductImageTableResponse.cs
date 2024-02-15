@@ -1,6 +1,4 @@
-﻿using LemmeProject.Application.Helpers;
-
-namespace LemmeProject.Application.DTOs.Images
+﻿namespace LemmeProject.Application.DTOs.Images
 {
     public class ProductImageTableResponse
     {

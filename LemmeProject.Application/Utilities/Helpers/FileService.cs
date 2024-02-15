@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LemmeProject.Application.Helpers
+namespace LemmeProject.Application.Utilities.Helpers
 {
     public class FileService : IFileService
     {
@@ -16,9 +16,9 @@ namespace LemmeProject.Application.Helpers
             {
                 string currentDirectory = Directory.GetCurrentDirectory();
                 string folderPath = Path.Combine(currentDirectory, "AppImages");
-                string guid=Guid.NewGuid().ToString();
+                string guid = Guid.NewGuid().ToString();
                 string fileName = $"{name}{guid}.jpeg";
-                
+
                 string filePath = $"{folderPath}/{fileName}";
                 File.WriteAllBytes(filePath, imageBytes);
                 return fileName;

@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using LemmeProject.Application.DTOs.Roles;
 using LemmeProject.Application.DTOs.Users;
-using LemmeProject.Application.Identity.Abstract;
-using LemmeProject.Application.Identity.Concrete;
 using LemmeProject.Application.Services.Abstract;
+using LemmeProject.Application.Utilities.Identity.Abstract;
+using LemmeProject.Application.Utilities.Identity.Concrete;
 using LemmeProject.Domain.Entities.Identity;
 using LemmeProject.Domain.Enums;
 using Microsoft.AspNetCore.Identity;

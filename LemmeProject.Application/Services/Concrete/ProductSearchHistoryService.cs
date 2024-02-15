@@ -3,6 +3,8 @@ using LemmeProject.Application.DTOs.Images;
 using LemmeProject.Application.DTOs.Products;
 using LemmeProject.Application.DTOs.ProductSearchHistory;
 using LemmeProject.Application.Services.Abstract;
+using LemmeProject.Application.Utilities.Results.Abstract;
+using LemmeProject.Application.Utilities.Results.Concrete;
 using LemmeProject.Domain.Entities;
 using LemmeProject.Domain.Interfaces;
 using System.Data;
@@ -30,7 +32,7 @@ namespace LemmeProject.Application.Services.Concrete
             await _productSearchHistoryRepository.CreateAsync(map);
         }
 
-        public async Task<List<ProductSearchHistoryTableResponse>> GetAllAsync()
+        public async Task<IDataResult<List<ProductSearchHistoryTableResponse>>> GetAllAsync()
         {
 
             var searchHistory = await _productSearchHistoryRepository.FindAllAsync();
@@ -44,10 +46,10 @@ namespace LemmeProject.Application.Services.Concrete
                              SearchedDate = history.SearchedDate,
                          };
 
-            return result.ToList();
+            return new SuccessDataResult<List<ProductSearchHistoryTableResponse>>(result.ToList());
         }
 
-        public async Task<List<ProductSearchCountTableResponse>> GetSearchCountByProductAsync()
+        public async Task<IDataResult<List<ProductSearchCountTableResponse>>> GetSearchCountByProductAsync()
         {
 
             var searchHistory = await _productSearchHistoryRepository.FindAllAsync();
@@ -60,9 +62,11 @@ namespace LemmeProject.Application.Services.Concrete
                                    ProductName = g.Key,
                                    SearchCount = g.Count()
                                };
-            return searchCounts.ToList();
+
+            return new SuccessDataResult<List<ProductSearchCountTableResponse>>(searchCounts.ToList());
+            
         }
-        public async Task<List<MostProductSearchHoursTableResponse>> GetMostSearchedHoursAsync()
+        public async Task<IDataResult<List<MostProductSearchHoursTableResponse>>> GetMostSearchedHoursAsync()
         {
             var searchHistory = await _productSearchHistoryRepository.FindAllAsync();
 
@@ -71,54 +75,58 @@ namespace LemmeProject.Application.Services.Concrete
                                      orderby g.Count() descending
                                      select new MostProductSearchHoursTableResponse()
                                      {
-                                         Hour = $"{g.Key+4}:00",
+                                         Hour = $"{g.Key + 4}:00",
                                          SearchCount = g.Count()
                                      };
-            return searchCountsByHour.ToList();
+
+            return new SuccessDataResult<List<MostProductSearchHoursTableResponse>>(searchCountsByHour.ToList());
         }
-        public async Task<List<MostProductSearchDaysTableResponse>> GetMostSearchedDaysAsync()
+        public async Task<IDataResult<List<MostProductSearchDaysTableResponse>>> GetMostSearchedDaysAsync()
         {
             var searchHistory = await _productSearchHistoryRepository.FindAllAsync();
 
             var searchCountsByDay = from history in searchHistory
-                                     group history by history.SearchedDate.ToShortDateString() into g
-                                     orderby g.Count() descending
-                                     select new MostProductSearchDaysTableResponse()
-                                     {
-                                         Day = g.Key.ToString(),
-                                         SearchCount = g.Count()
-                                     };
-            return searchCountsByDay.ToList();
+                                    group history by history.SearchedDate.ToShortDateString() into g
+                                    orderby g.Count() descending
+                                    select new MostProductSearchDaysTableResponse()
+                                    {
+                                        Day = g.Key.ToString(),
+                                        SearchCount = g.Count()
+                                    };
+
+            return new SuccessDataResult<List<MostProductSearchDaysTableResponse>>(searchCountsByDay.ToList());
         }
-        public async Task<List<MostProductSearchMonthsTableResponse>> GetMostSearchedMonthsAsync()
+        public async Task<IDataResult<List<MostProductSearchMonthsTableResponse>>> GetMostSearchedMonthsAsync()
         {
             var searchHistory = await _productSearchHistoryRepository.FindAllAsync();
 
             var searchCountsByMonth = from history in searchHistory
-                                     group history by history.SearchedDate.Month into g
-                                     orderby g.Count() descending
-                                     select new MostProductSearchMonthsTableResponse()
-                                     {
-                                         Month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(g.Key),
-                                         SearchCount = g.Count()
-                                     };
-            return searchCountsByMonth.ToList();
+                                      group history by history.SearchedDate.Month into g
+                                      orderby g.Count() descending
+                                      select new MostProductSearchMonthsTableResponse()
+                                      {
+                                          Month = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(g.Key),
+                                          SearchCount = g.Count()
+                                      };
+
+            return new SuccessDataResult<List<MostProductSearchMonthsTableResponse>>(searchCountsByMonth.ToList());
         }
 
-        public async Task<List<SearchedProductCountDuringDayTableResponse>> GetSearchedProductCountDuringDayAsync()
+        public async Task<IDataResult<List<SearchedProductCountDuringDayTableResponse>>> GetSearchedProductCountDuringDayAsync()
         {
             var searchHistory = await _productSearchHistoryRepository.FindAllAsync();
 
             var searchCountsDuringDay = from history in searchHistory
-                                     group history by history.SearchedDate.ToShortDateString() into g
-                                     where g.Key == DateTime.Today.ToShortDateString()
-                                     orderby g.Count() descending
-                                     select new SearchedProductCountDuringDayTableResponse()
-                                     {
-                                         Day = g.Key.ToString(),
-                                         SearchCount = g.Count()
-                                     };
-            return searchCountsDuringDay.ToList();
+                                        group history by history.SearchedDate.ToShortDateString() into g
+                                        where g.Key == DateTime.Today.ToShortDateString()
+                                        orderby g.Count() descending
+                                        select new SearchedProductCountDuringDayTableResponse()
+                                        {
+                                            Day = g.Key.ToString(),
+                                            SearchCount = g.Count()
+                                        };
+
+            return new SuccessDataResult<List<SearchedProductCountDuringDayTableResponse>>(searchCountsDuringDay.ToList());
         }
 
     }

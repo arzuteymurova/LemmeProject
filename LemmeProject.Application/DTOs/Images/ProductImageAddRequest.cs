@@ -1,5 +1,4 @@
-﻿using LemmeProject.Application.Helpers;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace LemmeProject.Application.DTOs.Images
 {

@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using HotelAPI.Application.Utilities.Constants;
 using LemmeProject.Application.DTOs.Images;
 using LemmeProject.Application.DTOs.Products;
 using LemmeProject.Application.DTOs.ProductSearchHistory;
-using LemmeProject.Application.Helpers;
 using LemmeProject.Application.Services.Abstract;
+using LemmeProject.Application.Utilities.Helpers;
+using LemmeProject.Application.Utilities.Results.Abstract;
+using LemmeProject.Application.Utilities.Results.Concrete;
 using LemmeProject.Domain.Entities;
 using LemmeProject.Domain.Enums;
 using LemmeProject.Domain.Interfaces;
@@ -18,7 +21,8 @@ namespace LemmeProject.Application.Services.Concrete
 
         private readonly IMapper _mapper;
         private readonly IFileService _fileService;
-        public ProductService(IProductRepository productRepository, IProductImageRepository productImageRepository, IMapper mapper, IFileService fileService, IProductSearchHistoryService productSearchHistoryService)
+        public ProductService(IProductRepository productRepository, IProductImageRepository productImageRepository,
+            IMapper mapper, IFileService fileService, IProductSearchHistoryService productSearchHistoryService)
         {
             _productRepository = productRepository;
             _productImageRepository = productImageRepository;
@@ -26,24 +30,23 @@ namespace LemmeProject.Application.Services.Concrete
             _fileService = fileService;
             _productSearchHistoryService = productSearchHistoryService;
         }
-        public async Task AddAsync(ProductAddRequest productAddRequest)
+
+        public async Task<IResult> AddAsync(ProductAddRequest productAddRequest)
         {
             foreach (var image in productAddRequest.Images)
             {
                 byte[] bytes = Convert.FromBase64String(image.FileBase64);
                 image.FileName = _fileService.SavePhotoToFtp(bytes, image.FileName);
             }
+
             Product product = _mapper.Map<Product>(productAddRequest);
             await _productRepository.CreateAsync(product);
-        }
 
-        public async Task DeleteByIdAsync(int id)
-        {
-            Product product = await _productRepository.FindByIdAsync(id);
-            await _productRepository.DeActivate(product);
-        }
+            return new SuccessResult(Messages.ProductAdded);
 
-        public async Task EditAsync(ProductUpdateRequest productUpdateRequest)
+        }    
+
+        public async Task<IResult> EditAsync(ProductUpdateRequest productUpdateRequest)
         {
             foreach (var image in productUpdateRequest.Images)
             {
@@ -52,10 +55,21 @@ namespace LemmeProject.Application.Services.Concrete
             }
             Product product = _mapper.Map<Product>(productUpdateRequest);
             await _productRepository.UpdateAsync(product);
+
+            return new SuccessResult(Messages.ProductUpdated);
+
         }
 
+        public async Task<IResult> DeleteByIdAsync(int id)
+        {
+            Product product = await _productRepository.FindByIdAsync(id);
+            await _productRepository.DeActivate(product);
 
-        public async Task<ProductTableResponse> GetById(int id)
+            return new SuccessResult(Messages.ProductDeleted);
+
+        }
+
+        public async Task<IDataResult<ProductTableResponse>> GetByIdAsync(int id)
         {
             var products = await _productRepository.FindAllAsync();
             var images = await _productImageRepository.FindAllAsync();
@@ -87,11 +101,10 @@ namespace LemmeProject.Application.Services.Concrete
 
             });
 
-            return result;
+            return new SuccessDataResult<ProductTableResponse>(result);
         }
 
-
-        public async Task<List<ProductTableResponse>> GetTable()
+        public async Task<IDataResult<List<ProductTableResponse>>> GetTableAsync()
         {
             var products = await _productRepository.FindAllAsync();
             var images = await _productImageRepository.FindAllAsync();
@@ -115,10 +128,11 @@ namespace LemmeProject.Application.Services.Concrete
                                                }).ToList()
                                            }).ToList();
 
-            return result;
+            return new SuccessDataResult<List<ProductTableResponse>>(result);
+
         }
 
-        public async Task<List<ProductTableResponse>> GetProductByName(string name)
+        public async Task<IDataResult<List<ProductTableResponse>>> GetProductByNameAsync(string name)
         {
             var products = await _productRepository.FindByConditionAsync(p => p.EntityStatus == EntityStatus.Active && p.Name.ToLower().Contains(name.ToLower()));
             var images = await _productImageRepository.FindAllAsync();
@@ -142,26 +156,8 @@ namespace LemmeProject.Application.Services.Concrete
                                                }).ToList()
                                            }).ToList();
 
-            return result;
+            return new SuccessDataResult<List<ProductTableResponse>>(result);
 
-        }
-
-        private static readonly Dictionary<string, int> searchCounts = new();
-        public void LogSearch(ProductTableResponse productTableResponse)
-        {
-            if (searchCounts.ContainsKey(productTableResponse.Name))
-            {
-                searchCounts[productTableResponse.Name]++;
-            }
-            else
-            {
-                searchCounts[productTableResponse.Name] = 1;
-            }
-
-        }
-        public Dictionary<string, int> GetSearchCount()
-        {
-            return searchCounts;
         }
 
     }

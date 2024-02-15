@@ -30,7 +30,6 @@ namespace LemmeProject.Infrastructure.Repositories
             entities = await repositoryContextBase.Set<TEntity>().Where(x => x.EntityStatus == EntityStatus.Active).ToListAsync();
             return entities;
         }
-
         public async Task<List<TEntity>> FindAllAsync()
         {
             List<TEntity> entities;
@@ -72,13 +71,11 @@ namespace LemmeProject.Infrastructure.Repositories
             await repositoryContextBase.Set<TEntity>().AddRangeAsync(entites);
             await repositoryContextBase.SaveChangesAsync();
         }
-
         public async Task UpdateAsync(TEntity entity)
         {
             repositoryContextBase.Set<TEntity>().Update(entity);
             await repositoryContextBase.SaveChangesAsync();
         }
-
         public async Task DeActivate(TEntity entity)
         {
             entity.EntityStatus = EntityStatus.InActive;

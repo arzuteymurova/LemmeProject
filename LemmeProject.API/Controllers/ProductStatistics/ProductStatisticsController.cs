@@ -18,44 +18,74 @@ namespace LemmeProject.API.Controllers.ProductStatistics
         [HttpGet("GetProductSearchHistory")]
         public async Task<IActionResult> GetProductSearchHistory()
         {
-            var data = await _searchHistoryService.GetAllAsync();
-            return Ok(data);
+            var result = await _searchHistoryService.GetAllAsync();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
         }
 
         [HttpGet("GetProductSearchCount")]
         public async Task<IActionResult> GetProductSearchCount()
         {
-            var data = await _searchHistoryService.GetSearchCountByProductAsync();
-            return Ok(data);
+            var result = await _searchHistoryService.GetSearchCountByProductAsync();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
         }
 
 
         [HttpGet("GetMostProductSearchedHours")]
         public async Task<IActionResult> GetMostProductSearchedHours()
         {
-            var data = await _searchHistoryService.GetMostSearchedHoursAsync();
-            return Ok(data);
+            var result = await _searchHistoryService.GetMostSearchedHoursAsync();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
         }
 
         [HttpGet("GetMostProductSearchedDays")]
         public async Task<IActionResult> GetMostProductSearchedDays()
         {
-            var data = await _searchHistoryService.GetMostSearchedDaysAsync();
-            return Ok(data);
+            var result = await _searchHistoryService.GetMostSearchedDaysAsync();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
         }
 
         [HttpGet("GetMostProductSearchedMonths")]
         public async Task<IActionResult> GetMostProductSearchedMonths()
         {
-            var data = await _searchHistoryService.GetMostSearchedMonthsAsync();
-            return Ok(data);
+            var result = await _searchHistoryService.GetMostSearchedMonthsAsync();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
         }
 
         [HttpGet("GetSearchedProductCountDuringDayAsync")]
         public async Task<IActionResult> GetSearchedProductCountDuringDayAsync()
         {
-            var data = await _searchHistoryService.GetSearchedProductCountDuringDayAsync();
-            return Ok(data);
+            var result = await _searchHistoryService.GetSearchedProductCountDuringDayAsync();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+
+            return BadRequest(result.Message);
         }
         
 

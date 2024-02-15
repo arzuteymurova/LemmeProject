@@ -1,4 +1,4 @@
-﻿namespace LemmeProject.Application.Helpers
+﻿namespace LemmeProject.Application.Utilities.Helpers
 {
     public class FileServerPath
     {

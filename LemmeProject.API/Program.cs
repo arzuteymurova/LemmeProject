@@ -1,7 +1,7 @@
 using LemmeProject.API.Middlewares;
 using LemmeProject.Application;
-using LemmeProject.Application.Helpers;
-using LemmeProject.Application.Identity.Concrete;
+using LemmeProject.Application.Utilities.Helpers;
+using LemmeProject.Application.Utilities.Identity.Concrete;
 using LemmeProject.Domain.Entities.Identity;
 using LemmeProject.Infrastructure;
 using LemmeProject.Persistence;

@@ -1,4 +1,4 @@
-﻿using LemmeProject.Application.Identity.Abstract;
+﻿using LemmeProject.Application.Utilities.Identity.Abstract;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;

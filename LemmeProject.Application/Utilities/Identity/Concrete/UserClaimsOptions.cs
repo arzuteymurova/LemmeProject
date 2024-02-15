@@ -1,6 +1,6 @@
-﻿using LemmeProject.Application.Identity.Abstract;
+﻿using LemmeProject.Application.Utilities.Identity.Abstract;
 
-namespace LemmeProject.Application.Identity.Concrete
+namespace LemmeProject.Application.Utilities.Identity.Concrete
 {
     public class UserClaimsOptions : IUserClaimsOptions
     {
