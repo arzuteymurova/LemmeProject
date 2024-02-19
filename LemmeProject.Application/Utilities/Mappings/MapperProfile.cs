@@ -2,6 +2,7 @@
 using LemmeProject.Application.DTOs.Images;
 using LemmeProject.Application.DTOs.Products;
 using LemmeProject.Application.DTOs.ProductSearchHistory;
+using LemmeProject.Application.DTOs.Questions;
 using LemmeProject.Application.DTOs.Roles;
 using LemmeProject.Application.DTOs.Users;
 using LemmeProject.Domain.Entities;
@@ -37,7 +38,8 @@ namespace LemmeProject.Application.Utilities.Mappings
             CreateMap<ProductSearchHistory, ProductSearchHistoryAddRequest>().ReverseMap();
             CreateMap<ProductSearchHistory, ProductSearchHistoryTableResponse>().ReverseMap();
 
-
+            CreateMap<Question, QuestionAddRequest>().ReverseMap();
+            CreateMap<Question, QuestionTableResponse>().ReverseMap();
 
 
 

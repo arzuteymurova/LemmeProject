@@ -1,13 +1,14 @@
 ﻿using LemmeProject.Application.DTOs.Roles;
 using LemmeProject.Application.DTOs.Users;
+using LemmeProject.Application.Utilities.Results.Abstract;
 using Microsoft.AspNetCore.Identity;
 
 namespace LemmeProject.Application.Services.Abstract
 {
     public interface IAccountService
     {
-        Task<IdentityResult> RegisterUserAsync(UserAddRequest userAddRequest);
-        Task<LoginedUserResponse> Login(LoginRequest loginRequest); 
+        Task<IDataResult<IdentityResult>> RegisterUserAsync(UserAddRequest userAddRequest);
+        Task<IDataResult<LoginedUserResponse>> Login(LoginRequest loginRequest); 
         Task<UserToUpdateResponse> GetUserForUpdateById(int id);
         Task<IdentityResult> EditUserAsync(UserUpdateRequest userUpdateRequest);
         List<UserTableResponse> GetAllUsers();

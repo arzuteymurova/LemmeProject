@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Data;
+using LemmeProject.Application.Utilities.Results.Abstract;
+using LemmeProject.Application.Utilities.Results.Concrete;
+using HotelAPI.Application.Utilities.Constants;
 
 
 namespace HotelAPI.Application.Services.Concrete;
@@ -32,7 +35,7 @@ public class AccountService : IAccountService
     }
 
 
-    public async Task<IdentityResult> RegisterUserAsync(UserAddRequest userAddRequest)
+    public async Task<IDataResult<IdentityResult>> RegisterUserAsync(UserAddRequest userAddRequest)
     {
         AppUser user = _mapper.Map<AppUser>(userAddRequest);
         IdentityResult result = await _userManager.CreateAsync(user, userAddRequest.Password);
@@ -46,13 +49,23 @@ public class AccountService : IAccountService
             }
 
         }
-        return result;
+        return new SuccessDataResult<IdentityResult>(result,Messages.UserRegistered);
     }
-    public async Task<LoginedUserResponse> Login(LoginRequest loginRequest)
+    public async Task<IDataResult<LoginedUserResponse>> Login(LoginRequest loginRequest)
     {
 
         AppUser user = await _userManager.Users.SingleOrDefaultAsync(x => x.UserName == loginRequest.UserName && x.EntityStatus == EntityStatus.Active);
+        if (user == null)
+        {
+            return new ErrorDataResult<LoginedUserResponse>(Messages.UserNotFound);
+        }
+
         bool checkPassword = await _userManager.CheckPasswordAsync(user, loginRequest.Password);
+        if (!checkPassword)
+        {
+            return new ErrorDataResult<LoginedUserResponse>(Messages.PasswordError);
+        }
+
         IList<string> roles = await _userManager.GetRolesAsync(user);
 
         UserClaimsOptions userModelForTokenGen = new UserClaimsOptions() { Id = user.Id, UserName = user.UserName };
@@ -67,20 +80,8 @@ public class AccountService : IAccountService
 
         };
 
-        return loginedUserResponse;
-        //if (checkPassword)
-        //{
-        //    return IdentityResult.Success;
-        //}
-        //else
-        //{
-        //    return IdentityResult.Failed(new IdentityError
-        //    {
-        //        Description = "Invalid username or password."
-        //    });
-        //}
+        return new SuccessDataResult<LoginedUserResponse>(Messages.SuccessfulLogin);        
     }
-
     public List<UserTableResponse> GetAllUsers()
     {
         var query = from user in _userManager.Users.ToList()
