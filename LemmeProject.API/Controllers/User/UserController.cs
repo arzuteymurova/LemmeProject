@@ -8,7 +8,7 @@ namespace LemmeProject.API.Controllers.User
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+   // [Authorize(AuthenticationSchemes = "Bearer")]
 
     public class UserController : ControllerBase
     {

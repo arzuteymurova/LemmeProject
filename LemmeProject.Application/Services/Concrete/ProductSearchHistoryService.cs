@@ -31,7 +31,6 @@ namespace LemmeProject.Application.Services.Concrete
             var map = _mapper.Map<ProductSearchHistory>(ProductSearchHistoryAddRequest);
             await _productSearchHistoryRepository.CreateAsync(map);
         }
-
         public async Task<IDataResult<List<ProductSearchHistoryTableResponse>>> GetAllAsync()
         {
 
@@ -48,7 +47,6 @@ namespace LemmeProject.Application.Services.Concrete
 
             return new SuccessDataResult<List<ProductSearchHistoryTableResponse>>(result.ToList());
         }
-
         public async Task<IDataResult<List<ProductSearchCountTableResponse>>> GetSearchCountByProductAsync()
         {
 
@@ -111,7 +109,6 @@ namespace LemmeProject.Application.Services.Concrete
 
             return new SuccessDataResult<List<MostProductSearchMonthsTableResponse>>(searchCountsByMonth.ToList());
         }
-
         public async Task<IDataResult<List<SearchedProductCountDuringDayTableResponse>>> GetSearchedProductCountDuringDayAsync()
         {
             var searchHistory = await _productSearchHistoryRepository.FindAllAsync();

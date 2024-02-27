@@ -71,8 +71,8 @@ namespace LemmeProject.Application.Services.Concrete
 
         public async Task<IDataResult<ProductTableResponse>> GetByIdAsync(int id)
         {
-            var products = await _productRepository.FindAllAsync();
-            var images = await _productImageRepository.FindAllAsync();
+            var products = await _productRepository.FindAllActiveAsync();
+            var images = await _productImageRepository.FindAllActiveAsync();
 
             var result = products.Where(p => p.Id == id)
                                 .GroupJoin(images,
@@ -106,8 +106,8 @@ namespace LemmeProject.Application.Services.Concrete
 
         public async Task<IDataResult<List<ProductTableResponse>>> GetTableAsync()
         {
-            var products = await _productRepository.FindAllAsync();
-            var images = await _productImageRepository.FindAllAsync();
+            var products = await _productRepository.FindAllActiveAsync();
+            var images = await _productImageRepository.FindAllActiveAsync();
 
             var result = products.GroupJoin(images,
                                            product => product.Id,
@@ -135,7 +135,7 @@ namespace LemmeProject.Application.Services.Concrete
         public async Task<IDataResult<List<ProductTableResponse>>> GetProductByNameAsync(string name)
         {
             var products = await _productRepository.FindByConditionAsync(p => p.EntityStatus == EntityStatus.Active && p.Name.ToLower().Contains(name.ToLower()));
-            var images = await _productImageRepository.FindAllAsync();
+            var images = await _productImageRepository.FindAllActiveAsync();
 
             var result = products.GroupJoin(images,
                                            product => product.Id,
@@ -161,4 +161,5 @@ namespace LemmeProject.Application.Services.Concrete
         }
 
     }
+
 }

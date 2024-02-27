@@ -4,6 +4,7 @@ using LemmeProject.Persistence.AppDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LemmeProject.Persistence.Migrations
 {
     [DbContext(typeof(LemmeAppContext))]
-    partial class LemmeAppContextModelSnapshot : ModelSnapshot
+    [Migration("20240227105418_Mig2")]
+    partial class Mig2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -280,12 +283,11 @@ namespace LemmeProject.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<int>("EntityStatus")
-                        .HasColumnType("int")
-                        .HasColumnName("IsDeleted");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Questions", (string)null);
+                    b.ToTable("Question");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

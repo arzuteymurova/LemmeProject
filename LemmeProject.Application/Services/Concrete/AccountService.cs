@@ -80,7 +80,7 @@ public class AccountService : IAccountService
 
         };
 
-        return new SuccessDataResult<LoginedUserResponse>(Messages.SuccessfulLogin);        
+        return new SuccessDataResult<LoginedUserResponse>(loginedUserResponse);        
     }
     public List<UserTableResponse> GetAllUsers()
     {

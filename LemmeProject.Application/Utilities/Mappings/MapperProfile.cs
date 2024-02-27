@@ -40,6 +40,7 @@ namespace LemmeProject.Application.Utilities.Mappings
 
             CreateMap<Question, QuestionAddRequest>().ReverseMap();
             CreateMap<Question, QuestionTableResponse>().ReverseMap();
+            CreateMap<Question, QuestionUpdateRequest>().ReverseMap();
 
 
 

@@ -14,5 +14,5 @@ namespace LemmeProject.Application.Services.Abstract
         Task<IDataResult<List<ProductTableResponse>>> GetProductByNameAsync(string name);
       
     }
-    
+
 }
