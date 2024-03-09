@@ -132,7 +132,7 @@ namespace LemmeProject.Application.Services.Concrete
 
         }
 
-        public async Task<IDataResult<List<ProductTableResponse>>> GetProductByNameAsync(string name)
+        public async Task<IDataResult<List<ProductTableByNameResponse>>> GetProductByNameAsync(string name)
         {
             var products = await _productRepository.FindByConditionAsync(p => p.EntityStatus == EntityStatus.Active && p.Name.ToLower().Contains(name.ToLower()));
             var images = await _productImageRepository.FindAllActiveAsync();
@@ -140,23 +140,13 @@ namespace LemmeProject.Application.Services.Concrete
             var result = products.GroupJoin(images,
                                            product => product.Id,
                                            image => image.ProductId,
-                                           (product, imageGroup) => new ProductTableResponse
+                                           (product, imageGroup) => new ProductTableByNameResponse
                                            {
                                                Id = product.Id,
                                                Name = product.Name,
-                                               Overview = product.Overview,
-                                               Ingredients = product.Ingredients,
-                                               HowToUse = product.HowToUse,
-                                               Images = imageGroup.Select(image => new ProductImageTableResponse
-                                               {
-                                                   Id = image.Id,
-                                                   FileName = image.FileName,
-                                                   FileBase64 = Convert.ToBase64String(_fileService.GetPhoto(image.FileName)),
-                                                   ProductName = product.Name
-                                               }).ToList()
                                            }).ToList();
 
-            return new SuccessDataResult<List<ProductTableResponse>>(result);
+            return new SuccessDataResult<List<ProductTableByNameResponse>>(result);
 
         }
 

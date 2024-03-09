@@ -10,6 +10,10 @@ static class Messages
     public static string QuestionUpdated = "Question has been updated!";
     public static string QuestionDeleted = "Question has been deleted!";
 
+    public static string StoreAdded = "Store has been added!";
+    public static string StoreUpdated = "Store has been updated!";
+    public static string StoreDeleted = "Store has been deleted!";
+
     public static string AuthorizationDenied = "Authorization denied!";
     public static string TokenCreated = "Token created successfully!";
     public static string UserAlreadyExists = "User already exists!";

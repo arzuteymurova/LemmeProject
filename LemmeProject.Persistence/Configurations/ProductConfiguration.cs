@@ -19,6 +19,8 @@ namespace LemmeProject.Persistence.Configurations
 
             //Relations
             builder.HasMany(b => b.Images).WithOne(b => b.Product).HasForeignKey(b => b.ProductId);
+            builder.HasMany(b => b.Stores).WithMany(b => b.Products);
+
 
 
         }

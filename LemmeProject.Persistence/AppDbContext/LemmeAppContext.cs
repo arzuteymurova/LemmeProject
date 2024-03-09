@@ -17,8 +17,10 @@ namespace LemmeProject.Persistence.AppDbContext
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+
             var entitiesAssembly = typeof(BaseEntity).Assembly;
             builder.RegisterAllEntities<BaseEntity>(entitiesAssembly);
+
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 

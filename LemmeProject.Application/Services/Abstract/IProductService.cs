@@ -11,7 +11,7 @@ namespace LemmeProject.Application.Services.Abstract
         Task<IDataResult<ProductTableResponse>> GetByIdAsync(int id);
         Task<IDataResult<List<ProductTableResponse>>> GetTableAsync();
         Task<IResult> DeleteByIdAsync(int id);
-        Task<IDataResult<List<ProductTableResponse>>> GetProductByNameAsync(string name);
+        Task<IDataResult<List<ProductTableByNameResponse>>> GetProductByNameAsync(string name);
       
     }
 
