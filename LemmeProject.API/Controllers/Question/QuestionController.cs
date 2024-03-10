@@ -29,7 +29,7 @@ namespace LemmeProject.API.Controllers
         }
 
 
-        [HttpPost("EditQuestion")]
+        [HttpPut("EditQuestion")]
         public async Task<IActionResult> EditQuestion(QuestionUpdateRequest questionUpdateRequest)
         {
             var result = await _questionService.EditAsync(questionUpdateRequest);
@@ -42,7 +42,7 @@ namespace LemmeProject.API.Controllers
         }
 
 
-        [HttpPost("DeleteQuestion/{id}")]
+        [HttpDelete("DeleteQuestion/{id}")]
         public async Task<IActionResult> DeleteQuestion(int id)
         {
             var result = await _questionService.DeleteByIdAsync(id);

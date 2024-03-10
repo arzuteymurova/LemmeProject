@@ -8,7 +8,7 @@ namespace LemmeProject.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Store> builder)
         {
-            builder.ToTable("Questions");
+            builder.ToTable("Stores");
 
             builder.HasKey(b => b.Id);
             builder.Property(b => b.Adress).IsRequired();

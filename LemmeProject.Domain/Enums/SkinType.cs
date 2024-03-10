@@ -2,9 +2,9 @@
 {
     public enum SkinType
     {
-        All = 1,
-        Dry = 2,
-        Oily = 3,
-        Combination =4
+        Bütün = 1,
+        Quru = 2,
+        Yağlı = 3,
+        Qarışıq = 4
     }
 }

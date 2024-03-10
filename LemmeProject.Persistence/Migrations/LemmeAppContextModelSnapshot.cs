@@ -199,6 +199,10 @@ namespace LemmeProject.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SkinType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Products", (string)null);
@@ -286,6 +290,34 @@ namespace LemmeProject.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Questions", (string)null);
+                });
+
+            modelBuilder.Entity("LemmeProject.Domain.Entities.Store", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Adress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("int")
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Stores", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -391,6 +423,21 @@ namespace LemmeProject.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("ProductStore", b =>
+                {
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StoresId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductsId", "StoresId");
+
+                    b.HasIndex("StoresId");
+
+                    b.ToTable("ProductStore");
+                });
+
             modelBuilder.Entity("LemmeProject.Domain.Entities.ProductImage", b =>
                 {
                     b.HasOne("LemmeProject.Domain.Entities.Product", "Product")
@@ -460,6 +507,21 @@ namespace LemmeProject.Persistence.Migrations
                     b.HasOne("LemmeProject.Domain.Entities.Identity.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProductStore", b =>
+                {
+                    b.HasOne("LemmeProject.Domain.Entities.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LemmeProject.Domain.Entities.Store", null)
+                        .WithMany()
+                        .HasForeignKey("StoresId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -29,7 +29,7 @@ namespace LemmeProject.API.Controllers
         }
 
 
-        [HttpPost("EditStore")]
+        [HttpPut("EditStore")]
         public async Task<IActionResult> EditStore(StoreUpdateRequest storeUpdateRequest)
         {
             var result = await _storeService.EditAsync(storeUpdateRequest);
@@ -42,7 +42,7 @@ namespace LemmeProject.API.Controllers
         }
 
 
-        [HttpPost("DeleteStore/{id}")]
+        [HttpDelete("DeleteStore/{id}")]
         public async Task<IActionResult> DeleteStore(int id)
         {
             var result = await _storeService.DeleteByIdAsync(id);

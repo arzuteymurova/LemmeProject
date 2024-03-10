@@ -10,10 +10,11 @@ namespace LemmeProject.Application.DTOs.Products
         public string Overview { get; set; }
         public string HowToUse { get; set; }
         public string Ingredients { get; set; }
-        public SkinType SkinType { get; set; }
+        public string SkinType { get; set; }
 
 
         //Relations
         public List<ProductImageAddRequest> Images { get; set; }
+        public List<int> StoreIds { get; set; }
     }
 }
