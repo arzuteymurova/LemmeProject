@@ -17,9 +17,9 @@ namespace LemmeProject.API.Controllers.SkinType
         [HttpGet("DetermineSkinType/{countsOfABC}")]
         public IActionResult DetermineSkinType(int countsOfABC)
         {
-            int countOfA = countsOfABC.ToString()[0];
-            int countOfB = countsOfABC.ToString()[1];
-            int countOfC = countsOfABC.ToString()[2];
+            int countOfA = countsOfABC / 100;
+            int countOfB = countsOfABC / 10 % 10;
+            int countOfC = countsOfABC % 10;
 
             if (countOfA > countOfB && countOfA > countOfC)
             {
@@ -33,7 +33,7 @@ namespace LemmeProject.API.Controllers.SkinType
             }
             else
             {
-                var type = new { Type = "Karma" };
+                var type = new { Type = "Qarışıq" };
                 return Ok(type);
             }
 
