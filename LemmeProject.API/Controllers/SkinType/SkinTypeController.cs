@@ -36,10 +36,9 @@ namespace LemmeProject.API.Controllers.SkinType
                 var type = new { Type = "Qarışıq" };
                 return Ok(type);
             }
-
         }
 
-      
+
 
         [HttpGet("CheckIfSuitsSkinType/{productId}/{skinType}")]
         public async Task<IActionResult> CheckIfSuitsSkinType(int productId, string skinType)
@@ -69,6 +68,5 @@ namespace LemmeProject.API.Controllers.SkinType
             // Return the result
             return Ok(result);
         }
-
     }
 }
