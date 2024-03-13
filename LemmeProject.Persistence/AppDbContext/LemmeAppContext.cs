@@ -1,5 +1,6 @@
 ﻿using LemmeProject.Domain.Entities;
 using LemmeProject.Domain.Entities.Identity;
+using LemmeProject.Persistence.AppDbContext.SeedData;
 using LemmeProject.Persistence.Extensions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -22,8 +23,8 @@ namespace LemmeProject.Persistence.AppDbContext
             builder.RegisterAllEntities<BaseEntity>(entitiesAssembly);
 
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        }
 
-        
+            builder.SeedData(); 
+        }       
     }
 }

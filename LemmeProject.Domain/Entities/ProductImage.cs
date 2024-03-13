@@ -1,9 +1,7 @@
 ﻿
 
 namespace LemmeProject.Domain.Entities
-
 { 
-
     public class ProductImage : BaseEntity
     {
 
