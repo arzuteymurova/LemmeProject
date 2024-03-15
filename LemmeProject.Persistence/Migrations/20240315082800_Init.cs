@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace LemmeProject.Persistence.Migrations
 {
     /// <inheritdoc />
@@ -11,6 +13,24 @@ namespace LemmeProject.Persistence.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AboutApps",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AppName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Site = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    AppVersion = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AboutApps", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "ApplicationErrors",
                 columns: table => new
@@ -236,8 +256,7 @@ namespace LemmeProject.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImagePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<int>(type: "int", nullable: false)
@@ -299,6 +318,46 @@ namespace LemmeProject.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "AboutApps",
+                columns: new[] { "Id", "AppName", "AppVersion", "Content", "CreatedDate", "IsDeleted", "Site" },
+                values: new object[] { 1, "Lemme", "1.0.1", "Lemme Product Searching Application", new DateTime(2024, 3, 15, 12, 27, 59, 858, DateTimeKind.Local).AddTicks(8280), 0, "www.lemme.az" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "CreateDate", "EntityStatus", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { 1, null, new DateTime(2024, 3, 15, 12, 27, 59, 860, DateTimeKind.Local).AddTicks(4790), 0, "Admin", "ADMIN" },
+                    { 2, null, new DateTime(2024, 3, 15, 12, 27, 59, 860, DateTimeKind.Local).AddTicks(5906), 0, "Default", "DEFAULT" },
+                    { 3, null, new DateTime(2024, 3, 15, 12, 27, 59, 860, DateTimeKind.Local).AddTicks(5910), 0, "User", "USER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreateDate", "Email", "EmailConfirmed", "EntityStatus", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { 1, 0, "5559ee75-3f2e-49e3-af5a-05cab179426a", new DateTime(2024, 3, 15, 12, 27, 59, 860, DateTimeKind.Local).AddTicks(6656), "arzu@gmail.com", false, 0, "Arzu", "Teymurova", false, null, null, null, "AQAAAAIAAYagAAAAEMWK2+TIkiyloVS5ia7PfGhI+WNUbExWijTFG3telQ5296DG7vi1JZdQB9HUU9f/Ug==", null, false, null, false, "Arzu" });
+
+            migrationBuilder.InsertData(
+                table: "Stores",
+                columns: new[] { "Id", "Adress", "CreatedDate", "IsDeleted", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Nizami küçəsi, 24", new DateTime(2024, 3, 15, 12, 27, 59, 960, DateTimeKind.Local).AddTicks(8552), 0, "Olivia" },
+                    { 2, "Nizami küçəsi, 24", new DateTime(2024, 3, 15, 12, 27, 59, 960, DateTimeKind.Local).AddTicks(9302), 0, "Real Beauty" },
+                    { 3, "H.Eliyev prospekti, 94", new DateTime(2024, 3, 15, 12, 27, 59, 960, DateTimeKind.Local).AddTicks(9306), 0, "Bravo" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUserRoles",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 2, 1 },
+                    { 3, 1 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -357,6 +416,9 @@ namespace LemmeProject.Persistence.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AboutApps");
+
             migrationBuilder.DropTable(
                 name: "ApplicationErrors");
 

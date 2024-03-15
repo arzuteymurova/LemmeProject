@@ -1,59 +1,48 @@
-﻿using LemmeProject.Domain.Enums;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace LemmeProject.Application.Utilities.Helpers
 {
     public class FileService : IFileService
     {
-        public string SavePhotoToFtp(byte[] imageBytes, string name)
+        public async Task<string> UploadImageAsync(IFormFile imageFile)
         {
+            if (imageFile == null || imageFile.Length == 0)
+            {
+                return null;
+            }
+
             try
             {
-                string currentDirectory = Directory.GetCurrentDirectory();
-                string folderPath = Path.Combine(currentDirectory, "AppImages");
-                string guid = Guid.NewGuid().ToString();
-                string fileName = $"{name}{guid}.jpeg";
+                var uniqueFileName = $"{Guid.NewGuid()}_{imageFile.FileName}";
 
-                string filePath = $"{folderPath}/{fileName}";
-                File.WriteAllBytes(filePath, imageBytes);
-                return fileName;
+                var uploadsFolder = FileServerPath.Path;
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(fileStream);
+                }
+
+                return $"{uniqueFileName}";
             }
             catch (Exception ex)
             {
-                string message = ex.Message;
+                Console.WriteLine($"Error uploading image: {ex.Message}");
                 return null;
             }
         }
 
-        public byte[] GetPhoto(string fileNameFromDb)
+
+        public byte[] GetImageAsync(string path)
         {
-            byte[] photo = null;
-            try
+            string allPath=FileServerPath.Path+path;
+            if (allPath != null)
             {
-                if (!string.IsNullOrEmpty(fileNameFromDb))
-                {
-                    string currentDirectory = Directory.GetCurrentDirectory();
-                    string folderPath = Path.Combine(currentDirectory, "AppImages");
-                    string fullFilePath = Path.Combine(folderPath, fileNameFromDb.ToUpper());
-                    photo = File.ReadAllBytes(fullFilePath);
-                }
-                else
-                {
-                    // physicalPersonPhoto = NoImage;
-                }
-                return photo;
+                return File.ReadAllBytes(allPath); 
             }
-            catch (Exception ex)
-            {
-                //string message = ex.Message;
-                //physicalPersonPhoto = NoImage;
-                return photo;
-            }
+
+            return null; 
         }
     }
 }

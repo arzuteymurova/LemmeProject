@@ -8,6 +8,7 @@ using LemmeProject.Application.DTOs.Stores;
 using LemmeProject.Application.DTOs.Users;
 using LemmeProject.Domain.Entities;
 using LemmeProject.Domain.Entities.Identity;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace LemmeProject.Application.Utilities.Mappings
 {
@@ -28,8 +29,18 @@ namespace LemmeProject.Application.Utilities.Mappings
             CreateMap<AppRole, RoleAddRequest>().ReverseMap();
             CreateMap<AppRole, RoleTableResponse>().ReverseMap();
 
-            CreateMap<Product, ProductAddRequest>().ReverseMap();
-            CreateMap<Product, ProductUpdateRequest>().ReverseMap();
+            CreateMap<ProductAddRequest, Product>()
+            .ForMember(dest => dest.Images, opt => opt.Ignore())
+            .AfterMap((src, dest) =>
+            {
+                dest.Images = src.Images.Select(image => new ProductImage {}).ToList();
+            });
+            CreateMap<ProductUpdateRequest, Product>()
+            .ForMember(dest => dest.Images, opt => opt.Ignore())
+            .AfterMap((src, dest) =>
+            {
+                dest.Images = src.Images.Select(image => new ProductImage { }).ToList();
+            });
             CreateMap<Product, ProductTableResponse>().ReverseMap();
             CreateMap<Product, ProductTableByNameResponse>().ReverseMap();
 

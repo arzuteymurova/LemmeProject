@@ -18,7 +18,7 @@ namespace LemmeProject.API.Controllers.Product
         }
 
         [HttpPost("AddProduct")]
-        public async Task<IActionResult> AddProduct(ProductAddRequest productAddRequest)
+        public async Task<IActionResult> AddProduct([FromForm]ProductAddRequest productAddRequest)
         {
             var result = await _productService.AddAsync(productAddRequest);
             if (result.Success)
@@ -95,8 +95,6 @@ namespace LemmeProject.API.Controllers.Product
 
             return BadRequest(result.Message);
         }
-
-
 
     }
 }

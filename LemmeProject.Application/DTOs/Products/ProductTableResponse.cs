@@ -1,4 +1,5 @@
 ﻿using LemmeProject.Application.DTOs.Images;
+using LemmeProject.Domain.Entities;
 using LemmeProject.Domain.Enums;
 
 namespace LemmeProject.Application.DTOs.Products
@@ -13,6 +14,6 @@ namespace LemmeProject.Application.DTOs.Products
         public string SkinType { get; set; }
 
         //Relations
-        public List<ProductImageTableResponse> Images { get; set; }
+        public List<byte[]> Images { get; set; }
     }
 }

@@ -1,9 +1,10 @@
-﻿namespace LemmeProject.Application.Utilities.Helpers
+﻿using Microsoft.AspNetCore.Http;
+
+namespace LemmeProject.Application.Utilities.Helpers
 {
     public interface IFileService
     {
-        string SavePhotoToFtp(byte[] imageBytes, string name);
-        byte[] GetPhoto(string fileNameFromDb);
-
+        Task<string> UploadImageAsync(IFormFile imageFile);
+        byte[] GetImageAsync(string path);
     }
 }

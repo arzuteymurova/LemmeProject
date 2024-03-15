@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using HotelAPI.Application.Utilities.Constants;
-using LemmeProject.Application.DTOs.Images;
 using LemmeProject.Application.DTOs.Products;
 using LemmeProject.Application.DTOs.ProductSearchHistory;
 using LemmeProject.Application.Services.Abstract;
@@ -8,7 +7,6 @@ using LemmeProject.Application.Utilities.Helpers;
 using LemmeProject.Application.Utilities.Results.Abstract;
 using LemmeProject.Application.Utilities.Results.Concrete;
 using LemmeProject.Domain.Entities;
-using LemmeProject.Domain.Enums;
 using LemmeProject.Domain.Interfaces;
 
 namespace LemmeProject.Application.Services.Concrete
@@ -33,31 +31,34 @@ namespace LemmeProject.Application.Services.Concrete
 
         public async Task<IResult> AddAsync(ProductAddRequest productAddRequest)
         {
+            Product product = _mapper.Map<Product>(productAddRequest);
+
             foreach (var image in productAddRequest.Images)
             {
-                byte[] bytes = Convert.FromBase64String(image.FileBase64);
-                image.FileName = _fileService.SavePhotoToFtp(bytes, image.FileName);
+                foreach (var productImage in product.Images)
+                {
+                    productImage.ImagePath = await _fileService.UploadImageAsync(image);
+                }
             }
 
-            Product product = _mapper.Map<Product>(productAddRequest);
             await _productRepository.CreateAsync(product);
-
             return new SuccessResult(Messages.ProductAdded);
-
         }
 
         public async Task<IResult> EditAsync(ProductUpdateRequest productUpdateRequest)
         {
+            Product product = _mapper.Map<Product>(productUpdateRequest);
+
             foreach (var image in productUpdateRequest.Images)
             {
-                byte[] bytes = Convert.FromBase64String(image.FileBase64);
-                image.FileName = _fileService.SavePhotoToFtp(bytes, image.FileName);
+                foreach (var productImage in product.Images)
+                {
+                    productImage.ImagePath = await _fileService.UploadImageAsync(image);
+                }
             }
-            Product product = _mapper.Map<Product>(productUpdateRequest);
+
             await _productRepository.UpdateAsync(product);
-
             return new SuccessResult(Messages.ProductUpdated);
-
         }
 
         public async Task<IResult> DeleteByIdAsync(int id)
@@ -66,7 +67,6 @@ namespace LemmeProject.Application.Services.Concrete
             await _productRepository.DeActivate(product);
 
             return new SuccessResult(Messages.ProductDeleted);
-
         }
 
         public async Task<IDataResult<ProductTableResponse>> GetByIdAsync(int id)
@@ -74,27 +74,18 @@ namespace LemmeProject.Application.Services.Concrete
             var products = await _productRepository.FindAllActiveAsync();
             var images = await _productImageRepository.FindAllActiveAsync();
 
-            var result = products.Where(p => p.Id == id)
-                                .GroupJoin(images,
-                                           product => product.Id,
-                                           image => image.ProductId,
-                                           (product, imageGroup) => new ProductTableResponse
-                                           {
-                                               Id = product.Id,
-                                               Name = product.Name,
-                                               Overview = product.Overview,
-                                               Ingredients = product.Ingredients,
-                                               HowToUse = product.HowToUse,
-                                               SkinType=product.SkinType,
-                                               Images = imageGroup.Select(image => new ProductImageTableResponse
-                                               {
-                                                   Id = image.Id,
-                                                   FileName = image.FileName,
-                                                   FileBase64 = Convert.ToBase64String(_fileService.GetPhoto(image.FileName)),
-                                                   ProductName = product.Name
-                                               }).ToList()
-                                           })
-                                .FirstOrDefault();
+            var result = products.Where(product => product.Id == id).Select(product => new ProductTableResponse
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Overview = product.Overview,
+                Ingredients = product.Ingredients,
+                HowToUse = product.HowToUse,
+                SkinType = product.SkinType,
+                Images = images.Where(image => image.ProductId == product.Id)
+                .Select(image => _fileService.GetImageAsync(image.ImagePath)).ToList()
+            }).FirstOrDefault();
+
             await _productSearchHistoryService.AddAsync(new ProductSearchHistoryAddRequest()
             {
                 SearchedDate = DateTime.Now,
@@ -110,49 +101,38 @@ namespace LemmeProject.Application.Services.Concrete
             var products = await _productRepository.FindAllActiveAsync();
             var images = await _productImageRepository.FindAllActiveAsync();
 
-            var result = products.GroupJoin(images,
-                                           product => product.Id,
-                                           image => image.ProductId,
-                                           (product, imageGroup) => new ProductTableResponse
-                                           {
-                                               Id = product.Id,
-                                               Name = product.Name,
-                                               Overview = product.Overview,
-                                               Ingredients = product.Ingredients,
-                                               HowToUse = product.HowToUse,
-                                               Images = imageGroup.Select(image => new ProductImageTableResponse
-                                               {
-                                                   Id = image.Id,
-                                                   FileName = image.FileName,
-                                                   FileBase64 = Convert.ToBase64String(_fileService.GetPhoto(image.FileName)),
-                                                   ProductName = product.Name
-                                               }).ToList()
-                                           }).ToList();
+            var result = products.Select(product => new ProductTableResponse
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Overview = product.Overview,
+                Ingredients = product.Ingredients,
+                HowToUse = product.HowToUse,
+                SkinType = product.SkinType,
+                Images = images.Where(image => image.ProductId == product.Id)
+                .Select(image => _fileService.GetImageAsync(image.ImagePath)).ToList()
+            }).ToList();
 
             return new SuccessDataResult<List<ProductTableResponse>>(result);
-
         }
 
         public async Task<IDataResult<List<ProductTableByNameResponse>>> GetProductByNameAsync(string name)
         {
             var products = await _productRepository.FindAllActiveAsync();
-            var images = await _productImageRepository.FindAllActiveAsync();
 
-            var result = products.Where(p => p.Name.ToLower().Contains(name.ToLower()))
-                                .GroupJoin(images,
-                                           product => product.Id,
-                                           image => image.ProductId,
-                                           (product, imageGroup) => new ProductTableByNameResponse
-                                           {
-                                               Id = product.Id,
-                                               Name = product.Name,
-                                           })
-                                .ToList();
+            var result = products.Where(product => product.Name.ToLower().Contains(name.ToLower())).Select(product => new ProductTableByNameResponse
+            {
+                Id = product.Id,
+                Name = product.Name,
+            }).ToList();
 
             return new SuccessDataResult<List<ProductTableByNameResponse>>(result);
-
         }
+
+
 
     }
 
 }
+
+

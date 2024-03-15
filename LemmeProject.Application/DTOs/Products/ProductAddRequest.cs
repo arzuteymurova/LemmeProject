@@ -14,7 +14,7 @@ namespace LemmeProject.Application.DTOs.Products
 
 
         //Relations
-        public List<ProductImageAddRequest> Images { get; set; }
+        public List<IFormFile> Images { get; set; }
         public List<int> StoreIds { get; set; }
     }
 }

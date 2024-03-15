@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LemmeProject.Persistence.Migrations
 {
     [DbContext(typeof(LemmeAppContext))]
-    [Migration("20240309190705_Init")]
+    [Migration("20240315082800_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -24,6 +24,57 @@ namespace LemmeProject.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("LemmeProject.Domain.Entities.AboutApp", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("AppVersion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EntityStatus")
+                        .HasColumnType("int")
+                        .HasColumnName("IsDeleted");
+
+                    b.Property<string>("Site")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AboutApps", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AppName = "Lemme",
+                            AppVersion = "1.0.1",
+                            Content = "Lemme Product Searching Application",
+                            CreatedDate = new DateTime(2024, 3, 15, 12, 27, 59, 858, DateTimeKind.Local).AddTicks(8280),
+                            EntityStatus = 0,
+                            Site = "www.lemme.az"
+                        });
+                });
 
             modelBuilder.Entity("LemmeProject.Domain.Entities.ApplicationError", b =>
                 {
@@ -87,6 +138,32 @@ namespace LemmeProject.Persistence.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreateDate = new DateTime(2024, 3, 15, 12, 27, 59, 860, DateTimeKind.Local).AddTicks(4790),
+                            EntityStatus = 0,
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreateDate = new DateTime(2024, 3, 15, 12, 27, 59, 860, DateTimeKind.Local).AddTicks(5906),
+                            EntityStatus = 0,
+                            Name = "Default",
+                            NormalizedName = "DEFAULT"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreateDate = new DateTime(2024, 3, 15, 12, 27, 59, 860, DateTimeKind.Local).AddTicks(5910),
+                            EntityStatus = 0,
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("LemmeProject.Domain.Entities.Identity.AppUser", b =>
@@ -169,6 +246,25 @@ namespace LemmeProject.Persistence.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "5559ee75-3f2e-49e3-af5a-05cab179426a",
+                            CreateDate = new DateTime(2024, 3, 15, 12, 27, 59, 860, DateTimeKind.Local).AddTicks(6656),
+                            Email = "arzu@gmail.com",
+                            EmailConfirmed = false,
+                            EntityStatus = 0,
+                            FirstName = "Arzu",
+                            LastName = "Teymurova",
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAIAAYagAAAAEMWK2+TIkiyloVS5ia7PfGhI+WNUbExWijTFG3telQ5296DG7vi1JZdQB9HUU9f/Ug==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "Arzu"
+                        });
                 });
 
             modelBuilder.Entity("LemmeProject.Domain.Entities.Product", b =>
@@ -226,11 +322,7 @@ namespace LemmeProject.Persistence.Migrations
                         .HasColumnType("int")
                         .HasColumnName("IsDeleted");
 
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FilePath")
+                    b.Property<string>("ImagePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -321,6 +413,32 @@ namespace LemmeProject.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Stores", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Adress = "Nizami küçəsi, 24",
+                            CreatedDate = new DateTime(2024, 3, 15, 12, 27, 59, 960, DateTimeKind.Local).AddTicks(8552),
+                            EntityStatus = 0,
+                            Name = "Olivia"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Adress = "Nizami küçəsi, 24",
+                            CreatedDate = new DateTime(2024, 3, 15, 12, 27, 59, 960, DateTimeKind.Local).AddTicks(9302),
+                            EntityStatus = 0,
+                            Name = "Real Beauty"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Adress = "H.Eliyev prospekti, 94",
+                            CreatedDate = new DateTime(2024, 3, 15, 12, 27, 59, 960, DateTimeKind.Local).AddTicks(9306),
+                            EntityStatus = 0,
+                            Name = "Bravo"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -405,6 +523,23 @@ namespace LemmeProject.Persistence.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 3
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>

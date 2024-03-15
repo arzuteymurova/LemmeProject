@@ -11,8 +11,8 @@ namespace LemmeProject.Persistence.Configurations
             builder.ToTable("ProductImages");
 
             builder.HasKey(b => b.Id);
-            builder.Property(b => b.FileName).IsRequired();
-            builder.Property(b => b.FilePath).IsRequired();
+            //builder.Property(b => b.FileName).IsRequired();
+            //builder.Property(b => b.FilePath).IsRequired();
             builder.Property(b => b.EntityStatus).HasColumnName("IsDeleted");
 
 
